@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from .models import CustomerModel
+from flask_jwt_extended import jwt_required
 
 
 class CustomersResource(Resource):
@@ -23,6 +24,7 @@ class CustomersItemResource(Resource):
             return customer.json()
         return {'message': 'Cliente não existe!'}
 
+    @jwt_required
     def post(self, customer_id):
         if CustomerModel.find_customer(customer_id):
             return {"message": "Cliente com id '{}' já existe!".format(customer_id)}, 400
